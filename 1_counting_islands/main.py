@@ -1,5 +1,6 @@
 from collections import deque
 
+from loguru import logger
 
 def count_islands(grid, rows, cols):
     visited = [[False] * cols for _ in range(rows)]
@@ -99,10 +100,10 @@ def main():
         grid = read_matrix(rows, cols)
 
         result = count_islands(grid, rows, cols)
-        print(f"\n Number of islands: {result}")
+        logger.info(f"\n Number of islands: {result}")
 
     except ValueError as error:
-        print(f"Input error: {error}")
+        logger.info(f"Input error: {error}")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 import numpy as np
+from loguru import logger
 
 from digit_classifier import DigitClassifier
 
@@ -13,7 +14,7 @@ def main():
     classifier = DigitClassifier(algorithm)
     prediction = classifier.predict(image)
 
-    print(f"Prediction: {prediction}")
+    logger.info(f"Prediction: {prediction}")
 
 
 if __name__ == "__main__":
