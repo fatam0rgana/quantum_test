@@ -11,7 +11,7 @@ class RegressionPredictor:
     def __init__(
         self,
         test_path="datasets/hidden_test.csv",
-        model_path="models/rf_model.joblib",
+        model_path="models/hgb_model.joblib",
         output_path="predictions/predictions.csv",
     ):
         self.test_path = test_path

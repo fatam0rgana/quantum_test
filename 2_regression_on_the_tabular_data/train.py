@@ -2,7 +2,7 @@ import os
 import joblib
 import pandas as pd
 
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import root_mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
@@ -17,7 +17,7 @@ class RegressionTrainer:
     def __init__(
         self,
         train_path="datasets/train.csv",
-        model_path="models/rf_model.joblib",
+        model_path="models/hgb_model.joblib",
         target_column="target",
     ):
         self.train_path = train_path
@@ -41,10 +41,11 @@ class RegressionTrainer:
                 ("imputer", SimpleImputer(strategy="median")),
                 (
                     "regressor",
-                    RandomForestRegressor(
-                        n_estimators=200,
+                    HistGradientBoostingRegressor(
+                        learning_rate=0.05,
+                        max_iter=500,
+                        l2_regularization=0.1,
                         random_state=42,
-                        n_jobs=-1
                     ),
                 ),
             ]

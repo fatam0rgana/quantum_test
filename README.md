@@ -43,7 +43,7 @@ How to run the tasks
 
 2) Regression on tabular data (2_regression_on_the_tabular_data)
    Directory contains:
-   - train.py — trains a RandomForestRegressor and saves to models/rf_model.joblib
+   - train.py — trains a HistGradientBoostingRegressor and saves to models/hgb_model.joblib
    - predict.py — loads the saved model and writes predictions to predictions/predictions.csv
    - datasets/ — expected to contain train.csv and hidden_test.csv (hidden_test.csv is already present)
 

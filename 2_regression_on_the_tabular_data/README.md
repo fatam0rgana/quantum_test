@@ -2,7 +2,7 @@
 
 Overview
 - Goal: train a tabular regression model on datasets/train.csv and produce predictions for datasets/hidden_test.csv.
-- Baseline model in this folder: RandomForestRegressor inside a simple sklearn Pipeline.
+- Baseline model in this folder: HistGradientBoostingRegressor inside a simple sklearn Pipeline.
 - Notebook: eda.ipynb documents exploratory analysis and model comparison.
 
 Project layout
@@ -54,11 +54,13 @@ Models evaluated on the same train/validation split:
 - Random Forest — substantially better RMSE than Linear Regression, robust to outliers and nonlinearities; stable without extensive tuning.
 - HistGradientBoosting (HGB) — achieved the best RMSE on the hold-out split in the EDA, with reasonably shaped residuals and good cross-validation stability (lowest mean RMSE, low std across folds) after removing feature "6".
 
-Why we ship RandomForest as the baseline model
-- It achieved the best RMSE on the hold-out split in the EDA (with feature 6).
-- Robust, simple, dependable: performs well out-of-the-box on heterogeneous tabular data without heavy tuning.
-- Stability and reproducibility: less sensitive to small changes in data and hyperparameters than boosting in many settings; good default with random_state.
-- Training and inference simplicity: parallelizable (n_jobs=-1), quick to retrain, and easy to interpret via permutation/feature importance.
+Why we ship HGB as the baseline model
+- It achieved the second-best RMSE on the hold-out split in the EDA (with feature 6), with a low gap between first and second places.
+- Compact model size and efficient inference: unlike Random Forest, HistGradientBoosting produces a lightweight model artifact that is easy to store, version, and distribute.
+- Strong performance on tabular data: gradient boosting methods are widely used for structured datasets and typically provide excellent predictive accuracy with minimal preprocessing.
+- Minimal preprocessing requirements: HGB handles heterogeneous numerical features well and works effectively without feature scaling or extensive feature engineering.
+- Stable and reproducible: the model demonstrates consistent performance across cross-validation folds and produces deterministic results when a fixed random seed is used.
+- Practical deployment characteristics: training and inference are fast, memory-efficient, and suitable for iterative experimentation and production scenarios.
 
 How to reproduce the notebook’s findings
 1) Open eda.ipynb (after installing deps):
@@ -71,7 +73,7 @@ How to reproduce the notebook’s findings
    - For the best-performing HGB run (after dropping feature "6"), residual diagnostics, 5-fold CV (neg RMSE) mean/std, permutation importance, and SHAP summaries.
 
 Running the baseline
-- Train the baseline RandomForest model:
+- Train the baseline HGB model:
   python train.py
 - Generate predictions for hidden_test.csv:
   python predict.py
@@ -85,12 +87,22 @@ Optional: enable preprocessing that drops feature "6"
   - In predict.py (inside run):
     data = DataPreprocessor().transform(data)
 
-Switching the baseline to HistGradientBoosting (if you prioritize RMSE)
-- In train.py, replace the regressor in build_model() with:
-  from sklearn.ensemble import HistGradientBoostingRegressor
-  ...
-  ("regressor", HistGradientBoostingRegressor(random_state=42)),
-- Consider basic hyperparameters (learning_rate, max_depth, l2_regularization) and monitor overfitting; cross-validate for robust selection.
+Switching the baseline to Random Forest (if you prioritize RMSE)
+
+- In `train.py`, replace the regressor in `build_model()` with:
+
+```python
+from sklearn.ensemble import RandomForestRegressor
+
+...
+
+("regressor", RandomForestRegressor(
+    n_estimators=100,
+    max_depth=20,
+    random_state=42,
+    n_jobs=-1
+))
+```
 
 Troubleshooting
 - If datasets/train.csv is missing or target column not found, the trainer will raise a clear error.
