@@ -1,7 +1,7 @@
 Quantum Test — How to run with pip or Poetry
 
 Overview
-- Python requirement: 3.11.x (as specified in pyproject.toml: >=3.11,<4.0)
+- Python requirement: 3.11.x (as specified in pyproject.toml: >=3.11,<4.0, I used 3.11.6 locally)
 - This repository contains three tasks:
   1. 1_counting_islands — pure Python solution with tests.
   2. 2_regression_on_the_tabular_data — training and prediction scripts for a tabular regression model.
