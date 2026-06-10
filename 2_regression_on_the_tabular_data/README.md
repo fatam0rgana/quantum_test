@@ -6,7 +6,7 @@ Overview
 - Notebook: eda.ipynb documents exploratory analysis and model comparison.
 
 Project layout
-- train.py — trains a model and saves it to models/rf_model.joblib
+- train.py — trains a model and saves it to models/hgb_model.joblib
 - predict.py — loads the saved model and writes predictions to predictions/predictions.csv
 - data_preparation.py — optional preprocessing (e.g., dropping suspicious/leaky features)
 - datasets/
